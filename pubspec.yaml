@@ -36,6 +36,10 @@ dependencies:
   cloud_firestore: ^4.13.0
   firebase_auth: ^4.2.0
   google_sign_in: ^6.1.4
+  syncfusion_flutter_pdf: ^24.2.6
+  http: ^0.13.6
+  path_provider: ^2.1.2
+
 
   
 

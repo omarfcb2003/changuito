@@ -2,7 +2,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:path_provider/path_provider.dart';
+
 import 'firestore_service.dart';
+import 'pdf_service.dart';
 
 class FirebaseService {
   Future<void> uploadTicketFile(File file, BuildContext context) async {
@@ -27,7 +30,6 @@ class FirebaseService {
         print('✅ Archivo subido a Firebase: $url');
 
         final firestore = FirestoreService();
-
         final currentUser = FirebaseAuth.instance.currentUser;
         final userEmail = currentUser?.email ?? 'desconocido';
 
@@ -38,7 +40,25 @@ class FirebaseService {
           date: DateTime.now(),
         );
 
-        _showSnackbar(context, '✅ Ticket subido y guardado correctamente');
+        // 🧠 Procesamiento del PDF
+        final pdfService = PdfService();
+        final localFile = await pdfService.downloadPdf(url);
+        final extractedText = await pdfService.extractTextFromFile(localFile);
+
+        // 🖨️ Mostrar solo primeros caracteres
+        final preview = extractedText.length > 500
+            ? extractedText.substring(0, 500)
+            : extractedText;
+        print('📄 Texto extraído (preview):\n$preview');
+        print('📏 Longitud total del texto: ${extractedText.length}');
+
+        // 📝 Guardar texto en archivo
+        final tempDir = await getTemporaryDirectory();
+        final debugFile = File('${tempDir.path}/ticket_debug.txt');
+        await debugFile.writeAsString(extractedText);
+        print('🗂️ Texto completo guardado en: ${debugFile.path}');
+
+        _showSnackbar(context, '✅ Ticket subido, guardado y procesado');
       } else {
         throw Exception('❌ La subida falló en Firebase Storage.');
       }
