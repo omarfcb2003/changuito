@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../services/auth_service.dart';
+import '../widgets/google_signin_button.dart';
 import 'main_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -14,8 +15,6 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     super.initState();
-
-    // Verificar si ya hay un usuario autenticado
     final user = _authService.currentUser;
     if (user != null) {
       _redirectToMain();
@@ -49,15 +48,8 @@ class _LoginScreenState extends State<LoginScreen> {
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(24.0),
-          child: ElevatedButton.icon(
-            icon: Icon(Icons.login),
-            label: Text('Iniciar sesión con Google'),
+          child: GoogleSignInButton(
             onPressed: _signIn,
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.redAccent,
-              padding: EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-              textStyle: TextStyle(fontSize: 18),
-            ),
           ),
         ),
       ),
