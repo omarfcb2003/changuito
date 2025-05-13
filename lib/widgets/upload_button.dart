@@ -13,22 +13,26 @@ class UploadButton extends StatelessWidget {
       onPressed: () async {
         final result = await FilePicker.platform.pickFiles(
           type: FileType.custom,
-          allowedExtensions: ['pdf'],
+          allowedExtensions: ['pdf', 'jpg', 'jpeg', 'png'],
         );
+
         if (result != null && result.files.single.path != null) {
           final file = File(result.files.single.path!);
           final fileName = result.files.single.name;
-          onFileSelected(file, fileName);
+          final extension = fileName.split('.').last.toLowerCase();
+
+          onFileSelected(file, extension);
+
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Ticket cargado: $fileName')),
+            SnackBar(content: Text('📁 Ticket seleccionado: $fileName')),
           );
         }
       },
-      child: Text('Subir Ticket PDF'),
+      child: const Text('Subir Ticket (PDF o Imagen)'),
       style: ElevatedButton.styleFrom(
         backgroundColor: Colors.green,
-        padding: EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-        textStyle: TextStyle(fontSize: 18),
+        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+        textStyle: const TextStyle(fontSize: 18),
       ),
     );
   }
