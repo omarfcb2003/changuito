@@ -37,7 +37,7 @@ class _ProcessButtonState extends State<ProcessButton> {
       _wasProcessedSuccessfully = false;
     });
 
-    // Mostrar loading
+    // Mostrar diálogo de carga
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -53,15 +53,18 @@ class _ProcessButtonState extends State<ProcessButton> {
     );
 
     try {
+      print('⏳ Iniciando uploadTicketFile...');
       await _firebaseService.uploadTicketFile(
         widget.file,
         widget.extractedText,
         context,
         market: widget.market,
       );
+      print('✅ uploadTicketFile terminado');
     } catch (e) {
+      print('❌ Error en uploadTicketFile: $e');
       if (context.mounted) {
-        Navigator.of(context).pop(); // cerrar diálogo
+        Navigator.of(context).pop(); // Cerrar diálogo
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('❌ Error: $e')),
         );
@@ -71,16 +74,19 @@ class _ProcessButtonState extends State<ProcessButton> {
     }
 
     if (context.mounted) {
-      Navigator.of(context).pop(); // cerrar diálogo
+      Navigator.of(context).pop(); // Cerrar diálogo
 
       setState(() {
         _isProcessing = false;
         _wasProcessedSuccessfully = true;
       });
 
+      // Ocultar el mensaje después de 4 segundos
       Future.delayed(const Duration(seconds: 4), () {
         if (mounted) {
-          setState(() => _wasProcessedSuccessfully = false);
+          setState(() {
+            _wasProcessedSuccessfully = false;
+          });
         }
       });
     }

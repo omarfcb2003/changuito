@@ -11,20 +11,31 @@ class UploadButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: () async {
-        final result = await FilePicker.platform.pickFiles(
-          type: FileType.custom,
-          allowedExtensions: ['pdf', 'jpg', 'jpeg', 'png'],
-        );
+        try {
+          final result = await FilePicker.platform.pickFiles(
+            type: FileType.custom,
+            allowedExtensions: ['pdf', 'jpg', 'jpeg', 'png'],
+          );
 
-        if (result != null && result.files.single.path != null) {
-          final file = File(result.files.single.path!);
-          final fileName = result.files.single.name;
-          final extension = fileName.split('.').last.toLowerCase();
+          if (result != null && result.files.single.path != null) {
+            final file = File(result.files.single.path!);
+            final fileName = result.files.single.name;
+            final extension = fileName.split('.').last.toLowerCase();
 
-          onFileSelected(file, extension);
+            print('📁 Archivo seleccionado: $fileName');
 
+            onFileSelected(file, extension);
+
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('📁 Ticket seleccionado: $fileName')),
+            );
+          } else {
+            print('⚠️ Selección de archivo cancelada');
+          }
+        } catch (e) {
+          print('❌ Error al seleccionar archivo: $e');
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('📁 Ticket seleccionado: $fileName')),
+            const SnackBar(content: Text('Error al seleccionar el archivo')),
           );
         }
       },
