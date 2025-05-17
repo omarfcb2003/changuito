@@ -1,57 +1,60 @@
-🧠 FLUJO DE TRABAJO CON GIT Y GITHUB PARA CHANGUITO
+# 🛒 Changuito
 
-========================================
-🔁 FLUJO BÁSICO PARA HACER CAMBIOS
-========================================
+**Changuito** es una aplicación móvil desarrollada con Flutter que permite a los usuarios cargar tickets de compra (en formato PDF o imagen), extraer texto mediante OCR (ML Kit) y almacenar los datos en Firebase para su análisis y organización.
 
-1. CREAR UNA NUEVA RAMA
-----------------------------------------
-git checkout -b nombre-de-la-rama
-Ejemplos:
-  git checkout -b autenticacion-google
-  git checkout -b ajuste-ui
-  git checkout -b refactor-firebase-service
+---
 
-2. HACER CAMBIOS EN TU PROYECTO
-----------------------------------------
-Modificá los archivos que necesites en Flutter, probá que todo funcione.
+## 🚀 Funcionalidades principales
 
-3. GUARDAR LOS CAMBIOS LOCALMENTE
-----------------------------------------
-git add .
-git commit -m "Descripción clara del cambio realizado"
+- 📸 Carga de tickets desde cámara o archivos
+- 🧠 Procesamiento de texto con Google ML Kit (OCR)
+- ☁️ Almacenamiento seguro en Firebase Storage y Firestore
+- 🛍 Identificación automática de mercado, fecha y contenido del ticket
 
-4. SUBIR LA RAMA AL REPOSITORIO REMOTO
-----------------------------------------
-git push origin nombre-de-la-rama
+---
 
-5. HACER EL MERGE DESDE GITHUB
-----------------------------------------
-1. Entrá a GitHub y creá un Pull Request (PR)
-2. Compará `nombre-de-la-rama` contra `main`
-3. Revisá los cambios, aprobá y hacé merge
+## 🛠 Tecnologías utilizadas
 
-6. ACTUALIZAR TU RAMA MAIN LOCAL
-----------------------------------------
-git checkout main
-git pull origin main
+- **Flutter** (Dart)
+- **Firebase**: Auth, Firestore, Storage
+- **Google ML Kit**: Text Recognition
+- **Android SDK + Gradle**
+- **Arquitectura limpia** con separación de widgets, services y screens
 
-========================================
-🚨 FLUJO PARA VOLVER A LA ÚLTIMA VERSIÓN ESTABLE
-========================================
+---
 
-1. CAMBIAR A LA RAMA PRINCIPAL
-----------------------------------------
-git checkout main
+## ⚙️ Requisitos previos
 
-2. REVERTIR A LA ÚLTIMA VERSIÓN SUBIDA A GITHUB
-----------------------------------------
-git reset --hard origin/main
+- Flutter 3.x instalado ([guía oficial](https://docs.flutter.dev/get-started/install))
+- Android Studio o VS Code
+- Una cuenta de Firebase y proyecto configurado
+- Archivos de configuración descargados:
+  - `google-services.json` → `android/app/`
+  - `GoogleService-Info.plist` → `ios/Runner/`
 
-3. (OPCIONAL) BORRAR ARCHIVOS NO VERSIONADOS
-----------------------------------------
-git clean -fd
+> Estos archivos están **excluidos del repositorio** por seguridad.
 
-⚠️ Este paso elimina archivos no registrados por Git. Usalo con cuidado.
+---
 
-========================================
+## 🧪 Cómo ejecutar el proyecto
+
+```bash
+git clone https://github.com/tu-usuario/changuito.git
+cd changuito
+flutter pub get
+flutter run
+
+## 🧪 Estructura del proyecto
+
+lib/
+├── models/              # Modelos de datos (ej: Market)
+├── services/            # Servicios de Firebase, OCR y procesamiento
+├── screens/             # Pantallas principales (Login, Home, etc.)
+├── widgets/             # Componentes reutilizables (botones, banners)
+├── main.dart            # Punto de entrada e inicialización Firebase
+
+
+## 🧪 Seguridad
+Las claves y archivos sensibles están excluidos vía .gitignore.
+
+Firebase se inicializa de forma robusta para evitar errores [duplicate-app].

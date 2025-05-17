@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart'; // 👈 generado por flutterfire
+import 'firebase_options.dart'; // generado por FlutterFire
 
 import 'screens/login_screen.dart';
 
@@ -11,9 +11,14 @@ void main() async {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
-    print('🔥 Firebase inicializado con firebase_options.dart');
-  } catch (e) {
-    print('❌ Error al inicializar Firebase: $e');
+    print('🔥 Firebase inicializado correctamente');
+  } on FirebaseException catch (e) {
+    if (e.code == 'duplicate-app') {
+      print('⚠️ Firebase ya estaba inicializado (duplicate-app), continuando...');
+    } else {
+      print('❌ Error inesperado al inicializar Firebase: $e');
+      rethrow;
+    }
   }
 
   runApp(const ChanguitoApp());
